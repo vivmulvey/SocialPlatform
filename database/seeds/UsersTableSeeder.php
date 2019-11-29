@@ -18,11 +18,7 @@ class UsersTableSeeder extends Seeder
 
       //User Model - Admin
       $admin = new User();
-      $admin->first_name = 'Viv';
-      $admin->last_name = 'Admin';
-      $admin->phone_number = '0876754423';
-      $admin->date_of_birth = '1997/09/17';
-      $admin->interest = 'Admin';
+      $admin->name = 'Viv';
       $admin->email = 'viv@socialplatform.ie';
       $admin->password = bcrypt('secret');
       $admin->save();
@@ -30,14 +26,18 @@ class UsersTableSeeder extends Seeder
 
       //User Model - User
       $user = new User();
-      $user->first_name = 'Sample';
-      $user->last_name = 'User';
-      $user->phone_number = '0876754423';
-      $user->date_of_birth = '1998/08/12';
-      $user->interest = 'Drawing';
+      $user->name = 'Sample User';
       $user->email = 'sampleuser@socialplatform.ie';
       $user->password = bcrypt('secret');
       $user->save();
       $user->roles()->attach($role_user);
-    }
+
+      factory(App\User::class, 20)->create()->each(function($user){
+        $user->roles()->attach(Role::where('name' , 'user')->first());
+      });
+
+
+
+
+  }
 }
