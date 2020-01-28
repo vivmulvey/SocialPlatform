@@ -8,8 +8,9 @@
             <div class="card">
                 <div class="card-header">
                     Users
+                  </div>
 
-                </div>
+
                 <div class="card-body">
                     @if (count($users) === 0)
                     <p>There are no users</p>
@@ -32,14 +33,14 @@
 
 
                               <td>{{ $user->name}}</td>
-                  
+
                               <td>{{ $user->email}}</td>
 
 
 
 
                                 <td>
-                                    <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-default ">View</a>
+                                    <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-primary ">View</a>
 
                                     {{-- <form style="display:inline-block" method="POST" action="{{route('admin.users.destroy', $user->id)}}">
                                         <input type="hidden" name="_method" value="DELETE">
@@ -66,5 +67,6 @@
             </div>
         </div>
     </div>
-</div>
+  </div>
+
 @endsection

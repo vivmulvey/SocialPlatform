@@ -1,20 +1,68 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2 class="text-center">My Posts</h2>
-    <ul class="list-group py-3 mb-3">
-        @forelse($posts as $post)
-            <li class="list-group-item my-2">
-                <h5>{{ $post->title }}</h5>
-                <p>{{ Str::limit($post->body,10) }}</p>
-                <small class="float-right">{{ $post->created_at->diffForHumans() }}</small>
-                <a href="{{route('posts.show',$post->id)}}">Read More</a>
-            </li>
-        @empty
-            <h4 class="text-center">You have no posts!</h4>
-        @endforelse
-    </ul>
-    <div class="d-flex justify-content-center">
-        {{ $posts->links() }}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="card">
+                <div class="card-header">
+                    My Posts
+                  </div>
+
+
+                <div class="card-body">
+                    @if (count($posts) === 0)
+                    <p>You have no posts</p>
+                    @else
+                    <table id="table-posts" class="table table-hover">
+                        <thead>
+                            <th>Title</th>
+
+                            <th>Description</th>
+
+
+                        </thead>
+                        <tbody>
+
+
+                            @foreach ($posts as $post)
+
+                             <tr data-id="{{ $post->id}}">
+
+
+
+                              <td>{{ $post->title}}</td>
+
+                              <td>{{ $post->description}}</td>
+
+
+
+
+                                <td>
+                                    <a href="{{ route('user.posts.show' , $post->id) }}" class="btn btn-primary ">View</a>
+
+                                    
+                                </td>
+                            </tr>
+
+
+
+
+
+
+                              @endforeach
+                        </tbody>
+                    </table>
+
+                    @endif
+
+                    <a href="{{ route('user.home')}}" class="btn btn-link">Back</a>
+
+                </div>
+            </div>
+        </div>
     </div>
+  </div>
+
 @endsection

@@ -4,86 +4,101 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Auth;
 use App\Post;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $posts = Post::orderBy('created_at' , 'desc')->paginate(12);
-        return view('posts.index',[
-        'posts' => $posts,
-      ]);
-    }
+   public function __construct()
+   {
+      $this->middleware('auth');
+   }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+   public function index()
+   {
+     $posts = Post::all(); //get all books from database and put it in $books
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+     return view('user.posts.index')->with([
+       'posts' => $posts
+     ]);
+   }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+  public function create()
+   {
+     $user = Auth::user();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    return view('user.posts.create');
+   }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+ public function store(Request $request)
+ {
+    $request->validate(
+    [
+      'file' => 'required|file|image',
+      'title' => 'required|max:100',
+      'description' => 'required|max:1000',
+]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+      $file = $request->file('file');
+      $extension = $file->getClientOriginalExtension();
+      $filename = date('Y-m-d-His') . '_' . $request->input('name') . '.' . $extension;
+      $path = $file->storeAs('public/files' , $filename);
+
+      $post = new Post();
+      $post->file = $filename;
+      $post->title = $request->input('title');
+      $post->description = $request->input('description');
+
+
+      $post->save();
+
+      return redirect()->route('user.home');
+  }
+
+   public function show($id){
+     $post = Post::findOrFail($id);
+
+     return view('user.posts.show')->with([
+       'post' => $post,
+
+     ]);
+   }
+
+   public function edit($id)
+   {
+      $post = Post::findOrFail($id);
+       return view('user.posts.edit')->with([
+         'post' => $post,
+
+   ]);
+ }
+
+ public function update(Request $request , $id){
+
+   $post = Post::findOrFail($id);
+
+   $request->validate([
+     'file' => 'file|image',
+     'title' => 'required|max:100',
+     'description' => 'required|max:1000'
+   ]);
+
+   if($request->hasFile('file')){
+     $file = $request->file('file');
+     $extension = $file->getClientOriginalExtension();
+     $filename = date('Y-m-d-His') . '_' . $request->input('name') . '.' . $extension;
+     $path = $file->storeAs('public/files' , $filename);
+
+     Storage::delete("public/files/{$post->file}");
+     $post->file = $filename;
+   }
+
+    $post->title = $request->input('title');
+    $post->description = $request->input('description');
+
+    $post->save();
+
+    return redirect()->route('user.posts.index');
+ }
 }

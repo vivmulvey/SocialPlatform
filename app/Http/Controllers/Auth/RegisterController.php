@@ -50,9 +50,18 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'picture' => ['required','file','image'],
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'date_of_birth' => ['required', 'string', 'max:10'],
+            'phone_number' => ['required', 'string', 'max:10'],
+            'location' => ['required', 'string', 'max:100'],
+            'interest' => ['required', 'string', 'max:100'],
+            'bio' => ['required', 'string', 'max:1000'],
+
+
+
         ]);
     }
 
@@ -64,15 +73,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         $user = User::create([
+            'picture' => $filename['picture'],
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'date_of_birth' => $data['date_of_birth'],
+            'phone_number' => $data['phone_number'],
+            'location' => $data['location'],
+            'interest' => $data['interest'],
+            'bio' => $data['bio'],
+
         ]);
 
         $user->roles()->attach(Role::where('name','user')->first());
-        // $user->save();
-         return $user;
+        $user->save();
+         // return $user;
         // redirect('dashboard/users')->with('success-message','New user has been added');
     }
 

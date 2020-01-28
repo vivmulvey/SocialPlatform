@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RolesTableSeeder::class); //We want roles to be called first ( needs to exist first)
         $this->call(UsersTableSeeder::class);
+        
     }
 }

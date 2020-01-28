@@ -7,7 +7,7 @@
         <div class="col-md-12 col-md-offset-2">
             <div class="card">
                 <div class="card-header">
-                    Create Post
+                    Comment:
                 </div>
                 <div class="card-body">
                     @if ($errors->any())
@@ -19,21 +19,14 @@
                         </ul>
                     </div>
                     @endif
-                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.posts.store')}}">
+                    <form method="POST" action="{{ route('user.comments.store')}}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
-                            <label for="file">File</label>
-                            <input type="file" class="form-control" id="file" name="file" />
+                            <label for="comment">Comment:</label>
+                            <input type="text" class="form-control" id="comment" name="comment" value="{{old("comment")}}" />
                         </div>
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" name="title" value="{{old("title")}}" />
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <input type="text" class="form-control" id="description" name="description" value="{{old("description")}}" />
-                        </div>
-                        <a href="{{ route('user.home')}}" class="btn btn-link">Cancel</a>
+
+                        <a href="{{ route('user.posts.index')}}" class="btn btn-link">Cancel</a>
                         <button type="submit" class="btn btn-outline-success float-right">Submit</button>
                     </form>
                 </div>
