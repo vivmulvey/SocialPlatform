@@ -47,3 +47,6 @@ Route::put('/user/comments/{id}', 'User\CommentController@update')->name('user.c
 Route::delete('/user/comments/{id}', 'User\CommentController@destroy')->name('user.comments.destroy');
 
 Route::get('/search','User\ProfileController@search')->name('user.search.index');
+
+Route::post('/user/profile/{id}/follow', 'ProfileController@followUser')->name('user.follow');
+Route::post('/user/profile/{id}/unfollow', 'ProfileController@unFollowUser')->name('user.unfollow');

@@ -11,14 +11,14 @@
                 </div>
 
                 <div class="col-md-4">
-                  <form action="/search" method="get">
-                    <div class="input-group">
-                      <input type="search" name="search" placeholder="Search by name" class="form-control">
-                      <span class="input-group-prepend">
-                      <button type="submit" class="btn btn-primary">Search</button>
-                    </span>
-                    </div>
-                  </div>
+                    <form action="/search" method="get">
+                        <div class="input-group">
+                            <input type="search" name="search" placeholder="Search by name" class="form-control">
+                            <span class="input-group-prepend">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </span>
+                        </div>
+                </div>
 
 
                 <div class="card-body">
@@ -31,16 +31,18 @@
                         </thead>
                         <tbody>
 
-
+                          @if (count($users) === 0)
+                          <p>Enter username</p>
+                          @else
                             @foreach ($users as $user)
                             <td>{{ $user->name}}</td>
                             <td>{{ $user->email}}</td>
                             <td>{{ $user->interest}}</td>
 
-                            @endforeach
 
-                              <a href="{{ route('user.home' , $user->id) }}" class="btn btn-primary ">View</a>
-
+                            <td><a href="{{ route('user.home' , $user->id) }}" class="btn btn-primary ">View</a></td>
+                          @endforeach
+                  @endif
                         </tbody>
                     </table>
 

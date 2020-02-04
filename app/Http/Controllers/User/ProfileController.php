@@ -70,9 +70,57 @@ class ProfileController extends Controller
  }
 
  public function search(Request $request){
-   $search = $request->get('search');
-   $users = DB::table('users')->where('name', 'like', '%'.$search.'%')->paginate(5);
-   return view('user.search.index' , ['users' => $users]);
-
+   if($request->get('search')) {
+     $search = $request->get('search');
+     $users = DB::table('users')->where('name', 'like', '%'.$search.'%')->paginate(5);
+     return view('user.search.index' ,with(['users' => $users]));
+   }
+   return view('user.search.index' ,with(['users' => []]));
  }
+
+ /**
+  * Follow the user.
+  *
+  * @param $profileId
+  *
+  */
+ public function followUser($id)
+  {
+   $user = User::findOrFail($id);
+   if(!$user) {
+
+    return redirect()->back()->with('error', 'User does not exist.');
+  }
+
+   $user->followers()->attach(auth()->user()->id);
+   return redirect()->back()->with('success', 'Successfully followed the user.');
+  }
+
+  /**
+ * unfollow the user.
+ *
+ * @param $profileId
+ *
+ */
+public function unFollowUser($id)
+{
+  $user = User::findOrFail($id);
+  if(!$user) {
+
+     return redirect()->back()->with('error', 'User does not exist.');
+    }
+   $user->followers()->detach(auth()->user()->id);
+   return redirect()->back()->with('success', 'Successfully unfollowed the user.');
+   }
+
+   // public function show($id)
+   // {
+   //  $user = User::findOrFail($id);
+   //  $followers = $user->followers;
+   //  $followings = $user->followings;
+   //
+   //  return view('user.followers.show')with([
+   //
+   //  ]);
+   //}
 }
