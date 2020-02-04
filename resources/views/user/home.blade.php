@@ -17,6 +17,9 @@
                     <a href="{{ route('user.profile.edit')}}" class="btn btn-link">Edit Profile</a>
                     <a href="{{ route('user.posts.create')}}" class="btn btn-link">Create Post</a>
                     <a href="{{ route('user.posts.index')}}" class="btn btn-link">My Posts</a>
+                    <a href="{{ route('user.search.index')}}" class="btn btn-link">Search</a>
+
+
 
 
 

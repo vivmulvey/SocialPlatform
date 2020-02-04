@@ -45,3 +45,5 @@ Route::get('/user/comments/{id}', 'User\CommentController@show')->name('user.com
 Route::get('/user/comments/{id}/edit', 'User\CommentController@edit')->name('user.comments.edit');
 Route::put('/user/comments/{id}', 'User\CommentController@update')->name('user.comments.update');
 Route::delete('/user/comments/{id}', 'User\CommentController@destroy')->name('user.comments.destroy');
+
+Route::get('/search','User\ProfileController@search')->name('user.search.index');

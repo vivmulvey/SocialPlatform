@@ -19,12 +19,12 @@
                         </ul>
                     </div>
                     @endif
-                    <form method="POST" action="{{ route('user.profile.update', $user )}}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.profile.update', $user )}}">
                         <input type="hidden" name="_method" value="PUT">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
-                            <label for="picture">Picture</label>
-                            <input type="file" class="form-control" id="picture" name="picture" />
+                            <label for="profile_picture">Picture</label>
+                            <input type="file" class="form-control" id="profile_picture" name="profile_picture" />
                         </div>
                          <div class="form-group">
                             <label for="title">Name</label>

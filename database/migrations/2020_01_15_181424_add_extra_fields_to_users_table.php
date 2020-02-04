@@ -14,7 +14,7 @@ class AddExtraFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-          $table->string('picture')->unique()->nullable()->default(null);
+          
           $table->date('date_of_birth');
           $table->string('phone_number');
           $table->string('location');

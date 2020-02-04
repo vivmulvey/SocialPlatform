@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\User;
 use Auth;
 
@@ -24,7 +26,7 @@ class ProfileController extends Controller
  {
    $user = Auth::user();
 
-  
+
 
      $request->validate([
          'name' => 'required',
@@ -34,10 +36,22 @@ class ProfileController extends Controller
          'phone_number' => 'required|min:10|max:10',
          'location' => 'required|max:100',
          'interest' => 'required|max:100',
-         'bio' => 'required|max:1000'
+         'bio' => 'required|max:1000',
+         'profile_picture' => 'file|image',
 
 
      ]);
+
+     if($request->hasFile('profile_picture')){
+       $profile_picture = $request->file('profile_picture');
+       $extension = $profile_picture->getClientOriginalExtension();
+       $filename = date('Y-m-d-His') . '_' . $request->input('name') . '.' . $extension;
+       $path = $profile_picture->storeAs('public/files' , $filename);
+
+       Storage::delete("public/profile_pictures/{$user->profile_picture}");
+       $user->profile_picture = $filename;
+
+     }
 
 
      $user->name = request('name');
@@ -51,7 +65,14 @@ class ProfileController extends Controller
 
 
      $user->save();
-     dd($user);
-     return back();
+
+     return redirect()->route('user.home');
+ }
+
+ public function search(Request $request){
+   $search = $request->get('search');
+   $users = DB::table('users')->where('name', 'like', '%'.$search.'%')->paginate(5);
+   return view('user.search.index' , ['users' => $users]);
+
  }
 }
