@@ -56,7 +56,6 @@
                         </div>
 
 
-
                         <a href="{{ route('user.home')}}" class="btn btn-link">Cancel</a>
                         <button type="submit" class="btn btn-outline-success float-right">Submit</button>
                     </form>

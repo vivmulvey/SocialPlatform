@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
       $admin->email = 'viv@socialplatform.ie';
       $admin->password = bcrypt('secret');
       $admin->date_of_birth = '1990/01/01';
-      $admin->phone_number = '0000000000000';
+      $admin->phone_number = '0000000000';
       $admin->location ='Dublin';
       $admin->interest = 'admin';
       $admin->bio = 'admin';
@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
       $user->email = 'sampleuser@socialplatform.ie';
       $user->password = bcrypt('secret');
       $user->date_of_birth = '1990/01/01';
-      $user->phone_number = '0000000000000';
+      $user->phone_number = '0000000000';
       $user->location ='Dublin';
       $user->interest = 'user';
       $user->bio = 'user';

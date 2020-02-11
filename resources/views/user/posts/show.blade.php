@@ -9,15 +9,13 @@
                 <div class="card-header">
                     Post:
                 </div>
-
-
                 <div class="card-body">
 
                     <table class="table table-hover">
                         <tbody>
                             <img src="{{ asset('storage/files/' . $post->file) }}" alt="{{ $post->file }}">
-                                <td>Title</td>
-                                <td>{{ $post->title }}</td>
+                            <td>Title</td>
+                            <td>{{ $post->title }}</td>
                             </tr>
                             <tr>
                                 <td>Description</td>
@@ -25,30 +23,73 @@
                             </tr>
                         </tbody>
                     </table>
-                    {{-- <div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            Comments:
+                        </div>
+                        <div class="card-body">
+                            @if(count($comments) == 0)
+                            <p> There are no comments</p>
+                            @else
+                            <table class='table'>
+                                <thead>
+
+
+
+                                </thead>
+                                <tbody>
+                                    @foreach ($comments as $comment)
+                                    <tr>
+                                      <th>User ID</th>
+
+
+                                        <td> {{$comment->user_id}}</td>
+                                        <td>{{ $comment->body }}</td>
+                                        <th>
+                                            <form style="display:inline-block" method="POST" action="{{ route('user.comments.destroy', ['id' => $post->id,'cid'=> $comment->id]) }}">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class"form-control btn btn-danger">Delete</a>
+                                            </form>
+                                        </th>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            @endif
+                        </div>
+                    </div>
+
+                    <div>
                         <h5>Add comment</h5>
-                        <form method="post" action="{{ route('user.comments.store'   ) }}">
+                        <form method="POST" action="{{ route('user.comments.store', $post->id) }}">
                             @csrf
+                            @method('POST')
                             <div class="form-group">
-                                <textarea class="form-control" name="description"></textarea>
+                                <textarea class="form-control" name="body" value="{{ old("body") }}"></textarea>
                                 <input type="hidden" name="post_id" value="{{ $post->id }}" />
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="btn btn-success" value="Add Comment" />
                             </div>
-                    </div> --}}
-                    <br/>
+                    </div>
+                    </form>
+                    <br />
+
                     <a href="{{route('user.posts.index')}}" class="btn btn-default ">Back</a>
                     <a href="{{route('user.posts.edit' , $post->id)}}" class="btn btn-default ">Edit</a>
 
 
                     <div class="form-group">
-                    <form style="display:inline-block" method="POST" action="">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="">
-                        <button type="submit" class="form-control btn btn-danger ">Delete</a>
-                    </form>
-                  </div>
+                        <form style="display:inline-block" method="POST" action="{{ route('user.posts.destroy',  $post->id) }}">
+                            {{-- <input type="hidden" name="_method" value="DELETE"> --}}
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            @method('DELETE')
+                            <button type="submit" class"form-control btn btn-danger">Delete</a>
+                        </form>
+                    </div>
 
 
 

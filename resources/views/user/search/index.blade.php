@@ -15,7 +15,7 @@
                         <div class="input-group">
                             <input type="search" name="search" placeholder="Search by name" class="form-control">
                             <span class="input-group-prepend">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary">Search by Name</button>
                             </span>
                         </div>
                 </div>
@@ -23,26 +23,28 @@
 
                 <div class="card-body">
                     <table id="table-posts" class="table table-hover">
-                        <thead>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Interest</th>
 
-                        </thead>
                         <tbody>
 
-                          @if (count($users) === 0)
-                          <p>Enter username</p>
-                          @else
+                            @if (count($users) === 0)
+                            <p>Enter username</p>
+                            @else
+                            <thead>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Interest</th>
+
+                            </thead>
                             @foreach ($users as $user)
+
                             <td>{{ $user->name}}</td>
                             <td>{{ $user->email}}</td>
                             <td>{{ $user->interest}}</td>
 
 
-                            <td><a href="{{ route('user.home' , $user->id) }}" class="btn btn-primary ">View</a></td>
-                          @endforeach
-                  @endif
+                            <td><a href="{{ route('user.profile.show' , $user->id) }}" class="btn btn-primary ">View</a></td>
+                            @endforeach
+                            @endif
                         </tbody>
                     </table>
 

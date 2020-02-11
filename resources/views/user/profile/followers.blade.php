@@ -7,43 +7,31 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header">
-                    My Posts
+                  Users that follow me
                   </div>
 
 
                 <div class="card-body">
-                    @if (count($posts) === 0)
-                    <p>You have no posts</p>
+                    @if (count($followers) === 0)
+                    <p>You have no users following you </p>
                     @else
                     <table id="table-posts" class="table table-hover">
                         <thead>
-                            <th>Title</th>
-
-                            <th>Description</th>
-
-
-                        </thead>
+                            <th>Name</th>
+                          </thead>
                         <tbody>
 
 
-                            @foreach ($posts as $post)
+                            @foreach ($user->followers as $user->follower)
 
-                             <tr data-id="{{ $post->id}}">
-
-
-
-                              <td>{{ $post->title}}</td>
-
-                              <td>{{ $post->description}}</td>
+                             <tr data-id="{{ $user->follower->id}}">
 
 
 
+                              <td>{{$user->follower->name}}</td>
+                              <td><a href="{{ route('user.profile.show' , $user->follower->id) }}" class="btn btn-primary "> View Profile</a></td>
 
-                                <td>
-                                    <a href="{{ route('user.posts.show' , $post->id) }}" class="btn btn-primary ">View</a>
 
-
-                                </td>
                             </tr>
                           @endforeach
                         </tbody>

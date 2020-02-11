@@ -18,10 +18,10 @@
                     <a href="{{ route('user.posts.create')}}" class="btn btn-link">Create Post</a>
                     <a href="{{ route('user.posts.index')}}" class="btn btn-link">My Posts</a>
                     <a href="{{ route('user.search.index')}}" class="btn btn-link">Search</a>
+                    <a href="{{ route('user.profile.followings', Auth::user()->id)}}" class="btn btn-link">Users I follow</a>
+                    <a href="{{ route('user.profile.followers', Auth::user()->id)}}" class="btn btn-link">Users following me</a>
 
-                    <a href="{{ route('user.follow', $user->id) }}" class="btn btn-link">Follow User</a>
-                    <a href="{{ route('user.unfollow', $user->id)}}" class="btn btn-link" >Unfollow User</a>
-              
+
 
 
 

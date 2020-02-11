@@ -47,6 +47,7 @@ class PostController extends Controller
 
       $post = new Post();
       $post->file = $filename;
+      $post->user_id = Auth::id();
       $post->title = $request->input('title');
       $post->description = $request->input('description');
 
@@ -58,9 +59,11 @@ class PostController extends Controller
 
    public function show($id){
      $post = Post::findOrFail($id);
+     $comments = $post->comments()->get();
 
      return view('user.posts.show')->with([
        'post' => $post,
+       'comments' => $comments
 
      ]);
    }
@@ -101,4 +104,15 @@ class PostController extends Controller
 
     return redirect()->route('user.posts.index');
  }
+
+ public function destroy($id)
+ {
+   $post = Post::findOrFail($id);
+
+   $post->delete();
+
+   return redirect()->route('user.posts.index');
+
+ }
+
 }
