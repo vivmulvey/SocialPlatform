@@ -90,8 +90,9 @@ class RegisterController extends Controller
 
         $user->roles()->attach(Role::where('name','user')->first());
         $user->save();
-         // return $user;
-        // redirect('dashboard/users')->with('success-message','New user has been added');
+        return $user;
+
+        
     }
 
 
