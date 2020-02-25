@@ -17,22 +17,22 @@ class ProfileController extends Controller
      $this->middleware('auth');
  }
 
- public function edit(User $user)
+ public function edit()
  {
-     $user = Auth::user();
-     return view('user.profile.edit', compact('user'));
- }
+     $user = Auth::id();
+     return view('user.profile.edit')->with([
+      'user' => $user
+    ]);
+  }
 
- public function update(Request $request)
+
+ public function update(Request $request , $id)
  {
    $user = Auth::user();
 
-
-
-     $request->validate([
+    $request->validate([
          'name' => 'required',
          'email' => 'unique:users,email,'.$user->id,
-         // 'email' => 'sometimes|required|email|unique:users,'.$user1,
          'date_of_birth' => 'required|date',
          'phone_number' => 'required|min:10|max:10',
          'location' => 'required|max:100',
@@ -57,7 +57,7 @@ class ProfileController extends Controller
 
      $user->name = request('name');
      $user->email = request('email');
-     $user->password = bcrypt(request('password'));
+     //$user->password = bcrypt(request('password'));
      $user->date_of_birth = request('date_of_birth');
      $user->phone_number = request('phone_number');
      $user->location = request('location');
@@ -69,6 +69,15 @@ class ProfileController extends Controller
 
      return redirect()->route('user.home');
  }
+
+     public function searchByName(Request $request){
+       if($request->get('searchByName')) {
+         $search = $request->get('searchByName');
+         $users = DB::table('users')->where('name', 'like', '%'.$search.'%')->paginate(5);
+         return view('user.searchByName.index' ,with(['users' => $users]));
+       }
+       return view('user.search.index' ,with(['users' => []]));
+     }
 
      public function search(Request $request){
        if($request->get('search')) {

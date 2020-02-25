@@ -48,3 +48,7 @@ Route::delete('/posts/{id}/comments/{cid}', 'User\CommentController@destroy')->n
 
 
 Route::get('/search','User\ProfileController@search')->name('user.search.index');
+
+Route::get('/messages', 'ChatsController@index');
+Route::get('messages', 'ChatsController@fetchMessages');
+Route::post('messages', 'ChatsController@sendMessage');
