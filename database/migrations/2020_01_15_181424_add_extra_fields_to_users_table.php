@@ -14,10 +14,11 @@ class AddExtraFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-          
+
           $table->date('date_of_birth');
           $table->string('phone_number');
-          $table->string('location');
+          $table->string('county');
+
           $table->string('interest');
           $table->string('bio');
         });
@@ -34,7 +35,8 @@ class AddExtraFieldsToUsersTable extends Migration
 
           $table->dropColumn('date_of_birth');
           $table->dropColumn('phone_number');
-          $table->dropColumn('location');
+          $table->dropColumn('county');
+          
           $table->dropColumn('interest');
           $table->dropColumn('bio');
         });

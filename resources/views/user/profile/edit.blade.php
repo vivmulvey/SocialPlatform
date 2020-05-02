@@ -7,7 +7,7 @@
         <div class="col-md-12 col-md-offset-2">
             <div class="card">
                 <div class="card-header">
-                    Edit Profile
+                    <h3>Edit Profile</h3>
                 </div>
                 <div class="card-body">
                     @if ($errors->any())
@@ -26,7 +26,7 @@
                             <label for="profile_picture">Picture</label>
                             <input type="file" class="form-control" id="profile_picture" name="profile_picture" />
                         </div>
-                         <div class="form-group">
+                        <div class="form-group">
                             <label for="title">Name</label>
                             <input type="text" class="form-control" id="name" name="name" value="{{old("name", $user->name)}}" />
                         </div>
@@ -43,26 +43,32 @@
                             <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{old("phone_number", $user->phone_number)}}" />
                         </div>
                         <div class="form-group">
-                            <label for="location">Location</label>
-                            <input type="text" class="form-control" id="location" name="location" value="{{old("location", $user->location)}}" />
-                        </div>
-                        <div class="form-group">
-                            <label for="interest">Interest</label>
-                            <input type="text" class="form-control" id="interest" name="interest" value="{{old("interest", $user->interest)}}" />
-                        </div>
-                        <div class="form-group">
-                            <label for="bio">Biography</label>
-                            <input type="text" class="form-control" id="bio" name="bio" value="{{old("bio", $user->bio)}}" />
+                            <label for="county">Select County:</label>
+                            <select name="county" class="form-control" style="width:250px">
+                                <option value="{{old("county", $user->county)}}"/option>
+                                @foreach ($counties as $county)
+                                    <option value="{{ $county->name }}">{{ $county->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
-
-                        <a href="{{ route('user.home')}}" class="btn btn-link">Cancel</a>
-                        <button type="submit" class="btn btn-outline-success float-right">Submit</button>
-                    </form>
+                <div class="form-group">
+                    <label for="interest">Interest</label>
+                    <input type="text" class="form-control" id="interest" name="interest" value="{{old("interest", $user->interest)}}" />
                 </div>
+                <div class="form-group">
+                    <label for="bio">Biography</label>
+                    <input type="text" class="form-control" id="bio" name="bio" value="{{old("bio", $user->bio)}}" />
+                </div>
+
+
+                <a href="{{ route('user.home')}}" class="btn btn-link">Cancel</a>
+                <button type="submit" class="btn btn-outline-success float-right">Submit</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 

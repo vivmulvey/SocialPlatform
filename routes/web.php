@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/auth/register' , 'RegisterController@showCounties')->name('auth.register');
 
 Route::get('/admin/home', 'Admin\HomeController@index')->name('admin.home');
 Route::get('/user/home/', 'User\HomeController@index')->name('user.home');
@@ -26,7 +27,7 @@ Route::get('/admin/users/{id}', 'Admin\UserController@show')->name('admin.users.
 
 //User Route
 Route::get('/user/profile/{id}', 'User\ProfileController@show')->name('user.profile.show');
-Route::get('/user/profile/edit', 'User\ProfileController@edit')->name('user.profile.edit');
+Route::get('/user/profile/edit/{id}', 'User\ProfileController@edit')->name('user.profile.edit');
 Route::put('/user/profile/{id}', 'User\ProfileController@update')->name('user.profile.update');
 Route::get('/user/profile/{id}/follow', 'User\ProfileController@followUser')->name('user.follow');
 Route::get('/user/profile/{id}/unfollow', 'User\ProfileController@unFollowUser')->name('user.unfollow');
@@ -48,7 +49,14 @@ Route::delete('/posts/{id}/comments/{cid}', 'User\CommentController@destroy')->n
 
 
 Route::get('/search','User\ProfileController@search')->name('user.search.index');
+Route::get('/search/byInterest','User\ProfileController@searchByInterest')->name('user.search.byInterest');
 
-Route::get('/messages', 'ChatsController@index');
-Route::get('messages', 'ChatsController@fetchMessages');
-Route::post('messages', 'ChatsController@sendMessage');
+Route::post('getFriends', 'HomeController@getFriends');
+Route::post('/session/create', 'SessionController@create');
+Route::post('/session/{session}/chats', 'ChatController@chats');
+Route::post('/session/{session}/read', 'ChatController@read');
+Route::post('/session/{session}/clear', 'ChatController@clear');
+Route::post('/session/{session}/block', 'BlockController@block');
+Route::post('/session/{session}/unblock', 'BlockController@unblock');
+Route::post('/send/{session}', 'ChatController@send');
+Route::get('/user/chat' , 'HomeController@chats')->name('user.chat.chat');

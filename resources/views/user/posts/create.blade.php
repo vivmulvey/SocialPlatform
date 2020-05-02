@@ -7,7 +7,7 @@
         <div class="col-md-12 col-md-offset-2">
             <div class="card">
                 <div class="card-header">
-                    Create Post
+                    <h3>Create Post</h3>
                 </div>
                 <div class="card-body">
                     @if ($errors->any())

@@ -7,18 +7,17 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header">
-                    Post:
+                    {{ $post->title }}
                 </div>
                 <div class="card-body">
 
                     <table class="table table-hover">
                         <tbody>
-                            <img src="{{ asset('storage/files/' . $post->file) }}" alt="{{ $post->file }}">
-                            <td>Title</td>
-                            <td>{{ $post->title }}</td>
-                            </tr>
+                          <img src="{{ Storage::url('/storage/files/'. $post->file) }}" alt="{{ $post->file }}">
+                            <!-- <img src="{{ asset('storage/files/' . $post->file) }}" alt="{{ $post->file }}"> -->
+
                             <tr>
-                                <td>Description</td>
+                                <th>Description</th>
                                 <td>{{ $post->description }}</td>
                             </tr>
                         </tbody>
@@ -41,18 +40,16 @@
                                 <tbody>
                                     @foreach ($comments as $comment)
                                     <tr>
-                                      <th>User ID</th>
-
-
-                                        <td> {{$comment->user_id}}</td>
+                                      <th>{{$comment->user->name}}</th>
                                         <td>{{ $comment->body }}</td>
-                                        <th>
+                                        <td>
+
                                             <form style="display:inline-block" method="POST" action="{{ route('user.comments.destroy', ['id' => $post->id,'cid'=> $comment->id]) }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <button type="submit" class"form-control btn btn-danger">Delete</a>
+                                                <button type="submit" class="form-control btn btn-danger">Delete</a>
                                             </form>
-                                        </th>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -61,7 +58,7 @@
                             @endif
                         </div>
                     </div>
-
+<br/>
                     <div>
                         <h5>Add comment</h5>
                         <form method="POST" action="{{ route('user.comments.store', $post->id) }}">
@@ -84,16 +81,14 @@
 
                     <div class="form-group">
                         <form style="display:inline-block" method="POST" action="{{ route('user.posts.destroy',  $post->id) }}">
-                            {{-- <input type="hidden" name="_method" value="DELETE"> --}}
+                           <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             @method('DELETE')
-                            <button type="submit" class"form-control btn btn-danger">Delete</a>
+                            <button type="submit" class = "form-control btn btn-danger">Delete</a>
                         </form>
                     </div>
+                  </div>
 
-
-
-                </div>
             </div>
             @endsection
         </div>

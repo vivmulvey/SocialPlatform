@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',  'email', 'password' , 'date_of_birth' , 'phone_number' , 'location' , 'interest' , 'bio' ,
+        'name',  'email', 'password' , 'date_of_birth' , 'phone_number' , 'county' , 'interest' , 'bio' ,
     ];
 
     /**
@@ -60,6 +60,33 @@ class User extends Authenticatable
     {
     return $this->belongsToMany('App\User', 'followers', 'follower_id', 'leader_id')->withTimestamps();
     }
+
+    // public function isFollowing(User $user){
+    //   return !! $this->followers()->where('follower_id', $user->id)->count();
+    // }
+    //
+    // public function isFollowedBy(User $user)
+    // {
+    // return !! $this->followers()->where('leader_id', $user->id)->count();
+    // }
+
+
+
+
+    /**
+     * A user can have many messages
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+      return $this->hasMany(Chat::class);
+    }
+
+    public function county(){
+      return $this->belongsTo('App\County');
+    }
+
 
 
 

@@ -7,7 +7,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="card">
                 <div class="card-header">
-                  Users I follow
+                  <h3>Following</h3>
                   </div>
 
 

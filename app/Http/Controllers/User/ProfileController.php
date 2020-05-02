@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Post;
+use App\County;
 use Auth;
 
 class ProfileController extends Controller
@@ -17,11 +18,14 @@ class ProfileController extends Controller
      $this->middleware('auth');
  }
 
- public function edit()
+ public function edit($id)
  {
-     $user = Auth::id();
+     $user = Auth::user();
+     $counties = County::all();
+
      return view('user.profile.edit')->with([
-      'user' => $user
+      'user' => $user,
+      'counties' => $counties
     ]);
   }
 
@@ -35,10 +39,11 @@ class ProfileController extends Controller
          'email' => 'unique:users,email,'.$user->id,
          'date_of_birth' => 'required|date',
          'phone_number' => 'required|min:10|max:10',
-         'location' => 'required|max:100',
+         'county' => 'required|max:100',
+
          'interest' => 'required|max:100',
          'bio' => 'required|max:1000',
-         'profile_picture' => 'file|image',
+         'profile_picture' => 'file|image'
 
 
      ]);
@@ -60,7 +65,8 @@ class ProfileController extends Controller
      //$user->password = bcrypt(request('password'));
      $user->date_of_birth = request('date_of_birth');
      $user->phone_number = request('phone_number');
-     $user->location = request('location');
+     $user->county = request('county');
+
      $user->interest = request('interest');
      $user->bio = request('bio');
 
@@ -69,15 +75,6 @@ class ProfileController extends Controller
 
      return redirect()->route('user.home');
  }
-
-     public function searchByName(Request $request){
-       if($request->get('searchByName')) {
-         $search = $request->get('searchByName');
-         $users = DB::table('users')->where('name', 'like', '%'.$search.'%')->paginate(5);
-         return view('user.searchByName.index' ,with(['users' => $users]));
-       }
-       return view('user.search.index' ,with(['users' => []]));
-     }
 
      public function search(Request $request){
        if($request->get('search')) {
@@ -88,7 +85,14 @@ class ProfileController extends Controller
        return view('user.search.index' ,with(['users' => []]));
      }
 
-
+     public function searchByInterest(Request $request){
+       if($request->get('searchByInterest')) {
+         $search = $request->get('searchByInterest');
+         $users = DB::table('users')->where('interest', 'like', '%'.$search.'%')->paginate(5);
+         return view('user.search.byInterest' ,with(['users' => $users]));
+       }
+       return view('user.search.byInterest' ,with(['users' => []]));
+     }
 
  /**
   * Follow the user.
@@ -96,36 +100,63 @@ class ProfileController extends Controller
   * @param $profileId
   *
   */
+
+  // public function isFollowing($id){
+  //   $follower_id = User::Auth();
+  //   $leader_id = User::findOrFai($id);
+  //
+  //   if($follower_id->isFollowing($leader_id)){
+  //
+  //   }else{
+  //   };
+  // }
+
+
+
    public function followUser($id)
     {
-     $user = User::findOrFail($id);
-       if(!$user) {
+      $user = User::findOrFail($id);
 
-        return redirect()->back()->with('error', 'User does not exist.');
+
+      if(!$user) {
+
+         return redirect()->back()->with('error', 'User does not exist.');
+
       }
 
-       $user->followers()->attach(auth()->user()->id);
+      $user->followers()->attach(auth()->user()->id);
 
        return redirect()->back()->with('success', 'Successfully followed the user.');
+
       }
 
-    /**
+
+    public function isFollowing(User $user)
+      {
+      return !! $this->following()->where('follow_id', $user->id)->count();
+
+      }
+
+/**
    * unfollow the user.
    *
-   * @param $profileId
+   *
    *
    */
     public function unFollowUser($id)
     {
       $user = User::findOrFail($id);
+
+
       if(!$user) {
 
          return redirect()->back()->with('error', 'User does not exist.');
+
         }
        $user->followers()->detach(auth()->user()->id);
 
        return redirect()->back()->with('success', 'Successfully unfollowed the user.');
-       }
+        }
 
 
        public function show($id)
@@ -133,11 +164,13 @@ class ProfileController extends Controller
         $user = User::findOrFail($id);
         $posts = $user->posts;
 
+        $following = $user->followers()->where('follower_id', auth()->user()->id)->exists();
+
 
         return view('user.profile.show', with([
           'user' => $user,
-          'posts' => $posts
-
+          'posts' => $posts,
+          'following' => $following
         ]));
       }
 
@@ -159,14 +192,12 @@ class ProfileController extends Controller
        public function followings($id)
          {
           $user = User::findOrFail($id);
-
           $followings = $user->followings;
 
           return view('user.profile.followings')->with([
            'user' => $user,
-
            'followings' => $followings
          ]);
 
-         }
-   }
+     }
+}

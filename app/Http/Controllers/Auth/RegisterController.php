@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
+use App\County;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -42,6 +43,14 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    // public function showCounties()
+    // {
+    //     $counties = County::all();// get all counties
+    //     return view('auth.register')->with([
+    //      'counties' => $counties
+    //    ]);
+    //  }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -50,6 +59,8 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
+
         return Validator::make($data, [
             'profile_picture' => ['required','file','image'],
             'name' => ['required', 'string', 'max:100'],
@@ -57,7 +68,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'date_of_birth' => ['required', 'string', 'max:10'],
             'phone_number' => ['required', 'string', 'max:10'],
-            'location' => ['required', 'string', 'max:100'],
+            'county' => ['required'],
             'interest' => ['required', 'string', 'max:100'],
             'bio' => ['required', 'string', 'max:1000'],
 
@@ -82,7 +93,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'date_of_birth' => $data['date_of_birth'],
             'phone_number' => $data['phone_number'],
-            'location' => $data['location'],
+            'county' => $data['county'],
             'interest' => $data['interest'],
             'bio' => $data['bio'],
 
@@ -92,10 +103,8 @@ class RegisterController extends Controller
         $user->save();
         return $user;
 
-        
+
     }
-
-
 
 
 }
